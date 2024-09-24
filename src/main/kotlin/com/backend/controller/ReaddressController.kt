@@ -3,8 +3,10 @@ package com.backend.controller
 import com.backend.domain.Readdress
 import com.backend.dto.ReaddressRequest
 import com.backend.repository.ReaddressRepository
+import com.backend.repository.ReaddressRepositoryCustom
 import com.backend.repository.ReuserRepository
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -12,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ReaddressController(
     val readdressRepository: ReaddressRepository,
-    val reuserRepository: ReuserRepository) {
+    val reuserRepository: ReuserRepository,
+    val readdressRepositoryCustom: ReaddressRepositoryCustom) {
 
     @GetMapping("/addrs")
     fun getReaddresses(): MutableList<Readdress> = readdressRepository.findAll()
@@ -23,4 +26,5 @@ class ReaddressController(
         val readdress = Readdress(readdressRequest.zip,readdressRequest.addr,findUser)
        return readdressRepository.save(readdress)
     }
-}
+
+    @GetMapping("/addrs/{zip}") fun getAddressByZip(@PathVariable zip:String) = readdressRepositoryCustom.findByZip(zip)}
